@@ -1,0 +1,32 @@
+# Date: 2025_07_21
+# Project/Focus Area: CueHa
+# Location(Windows): 
+# Location(Linux): ~/Desktop/Project_CueHa
+
+## Summary of what was done:
+-- Have added my suggestion of Operations for COMPSYS 209. This now includes 9 susbsystems and have the first two of it done. 
+
+## Tangents/Unrelated work:
+-- 
+
+## State of system when stopped:
+-- 
+
+## Questions/unknowns:
+-- 
+
+## Next step when resuming:
+-- Continue with the Canvas Dashboard --- that should give everything that needs to be done. 
+
+-- You need to have a system on how to go with all the four courses --- on how to schedule each lecture review. 
+-- Kno what could these lectures do to you, as you currently find them too slo and difficult to follow. One way is to treat them as briefs.
+-- Continue with the Operations for COMPSYS 209.
+-- Do this --- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/). Whilst you do not know both languages, you can still see what you need to learn.
+
+## Terms/Glossary:
+-- 
+
+## Links/Resources:
+-- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/)
+-- [Project_Spec-COMPSYS/ELECTENG_209](https://docs.google.com/document/d/1q0FHrRWt710-OGUFvNlDx8EEi1LsSeQ1YQJdkV1oX2c/edit?tab=t.0)
+

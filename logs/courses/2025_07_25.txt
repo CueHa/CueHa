@@ -1,0 +1,39 @@
+# Date: 2025_07_25
+# Project/Focus Area: CueHa
+# Location(Windows): 
+# Location(Linux): ~/Desktop/Project_CueHa
+
+## Summary of what was done:
+-- Have added my suggestion of Operations for COMPSYS 209. This now includes 9 susbsystems and have the first two of it done. 
+-- ELECTENG292 as monday, COMPSYS209 as tueday, SOFTENG284 as wednesday, ENGGEN204 as thursday. friday is flex but restricted to courses, saturday and saturday is flex.
+-- Lectures ill be used for briefing me, actual studying is in their own time.
+-- Have gone through the COMPSYS 209 Lab 1 document and all until 2.2. is done.
+
+
+## Tangents/Unrelated work:
+-- 
+
+## State of system when stopped:
+-- ELECTENG292 as monday, COMPSYS209 as tueday, SOFTENG284 as wednesday, ENGGEN204 as thursday. friday is flex but restricted to courses, saturday and saturday is flex.
+-- Behind one week, but this is expected.
+
+## Questions/unknowns:
+-- 
+
+## Next step when resuming:
+-- Continue with the Canvas Dashboard --- that should give everything that needs to be done. 
+
+-- Continue with the COMPSYS 209 Lab 1 document and finish it.
+-- Continue with the Operations for COMPSYS 209.
+-- Do this --- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/). Whilst you do not know both languages, you can still see what you need to learn.
+
+## Terms/Glossary:
+-- 
+
+## Links/Resources:
+-- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/)
+-- [Project_Spec-COMPSYS/ELECTENG_209](https://docs.google.com/document/d/1q0FHrRWt710-OGUFvNlDx8EEi1LsSeQ1YQJdkV1oX2c/edit?tab=t.0)
+
+## Notes/Realizations/Thoughts:
+
+

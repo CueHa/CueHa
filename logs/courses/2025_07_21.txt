@@ -1,0 +1,27 @@
+# Date: 2025_07_21
+# Project/Focus Area: CueHa
+# Location(Windows): 
+# Location(Linux): ~/Desktop/Project_CueHa
+
+## Summary of what was done:
+-- Have read the ENGGEN 204 course outline and have a good understanding of the course structure and requirements.
+
+## Tangents/Unrelated work:
+-- 
+
+## State of system when stopped:
+-- Starting.
+
+## Questions/unknowns:
+-- 
+
+## Next step when resuming:
+-- Do this --- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/). Whilst you do not know both languages, you can still see what you need to learn.
+-- Continue with the Canvas Dashboard --- that should give everything that needs to be done. 
+
+## Terms/Glossary:
+-- 
+
+## Links/Resources:
+-- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/)
+

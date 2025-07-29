@@ -1,0 +1,38 @@
+# Date: 2025_07_28
+# Project/Focus Area: CueHa
+# Location(Windows): 
+# Location(Linux): ~/Desktop/Project_CueHa
+
+## Summary of what was done:
+-- ELECTENG292 Tutorial 1 is done.
+
+## Tangents/Unrelated work:
+-- 
+
+## State of system when stopped:
+-- ELECTENG292 as monday, COMPSYS209 as tueday, SOFTENG284 as wednesday, ENGGEN204 as thursday. friday is flex but restricted to courses, saturday and saturday is flex.
+-- You are now just not using lectures for studying, instead you are using them as worktime for the supposed course of that day.
+
+-- Behind one week, but this is expected.
+
+## Questions/unknowns:
+-- 
+
+## Next step when resuming:
+-- Continue with the Canvas Dashboard --- that should give everything that needs to be done. 
+-- Ask the team in ENGGEN204 team charter, about whose going to share them.
+
+-- Continue with the COMPSYS 209 Lab 1 document and finish it.
+-- Continue with the Operations for COMPSYS 209.
+-- Do this --- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/). Whilst you do not know both languages, you can still see what you need to learn.
+
+## Terms/Glossary:
+-- 
+
+## Links/Resources:
+-- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/)
+-- [Project_Spec-COMPSYS/ELECTENG_209](https://docs.google.com/document/d/1q0FHrRWt710-OGUFvNlDx8EEi1LsSeQ1YQJdkV1oX2c/edit?tab=t.0)
+
+## Notes/Realizations/Thoughts:
+
+

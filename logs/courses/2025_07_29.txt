@@ -1,0 +1,38 @@
+# Date: 2025_07_29
+# Project/Focus Area: CueHa
+# Location(Windows): 
+# Location(Linux): ~/Desktop/Project_CueHa
+
+## Summary of what was done:
+-- ENGGEN204 Quiz 1 is done. You scored 90%. How pathetic. You should have scored 100%. Like, how hard is it to read the question and answer it correctly? You are not even reading the question, you are just reading the answers and then choosing one. This is not how you do it. You need to read the question, understand it, and then choose the answer that best fits. This is not hard. You can do better than this. 
+
+## Tangents/Unrelated work:
+-- 
+
+## State of system when stopped:
+-- ELECTENG292 as monday, COMPSYS209 as tueday, SOFTENG284 as wednesday, ENGGEN204 as thursday. friday is flex but restricted to courses, saturday and saturday is flex.
+-- You are now just not using lectures for studying, instead you are using them as worktime for the supposed course of that day.
+
+-- Behind one week, but this is expected.
+
+## Questions/unknowns:
+-- 
+
+## Next step when resuming:
+-- Continue with the Canvas Dashboard --- that should give everything that needs to be done. 
+-- Ask the team in ENGGEN204 team charter, about whose going to share them.
+
+-- Continue with the COMPSYS 209 Lab 1 document and finish it.
+-- Continue with the Operations for COMPSYS 209.
+-- Do this --- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/). Whilst you do not know both languages, you can still see what you need to learn.
+
+## Terms/Glossary:
+-- 
+
+## Links/Resources:
+-- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/)
+-- [Project_Spec-COMPSYS/ELECTENG_209](https://docs.google.com/document/d/1q0FHrRWt710-OGUFvNlDx8EEi1LsSeQ1YQJdkV1oX2c/edit?tab=t.0)
+
+## Notes/Realizations/Thoughts:
+
+
