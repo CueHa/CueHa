@@ -34,5 +34,8 @@
 -- [Project_Spec-COMPSYS/ELECTENG_209](https://docs.google.com/document/d/1q0FHrRWt710-OGUFvNlDx8EEi1LsSeQ1YQJdkV1oX2c/edit?tab=t.0)
 
 ## Notes/Realizations/Thoughts:
+-- You need to make sure that one-subject dedicated days are not going to waste. You're main goal should be;
+---- Catch up with the lectures, and then do the tasks. It's important that you catch up to your lectures. 
+
 
 
