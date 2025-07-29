@@ -5,6 +5,7 @@
 
 ## Summary of what was done:
 -- ENGGEN204 Quiz 1 is done. You scored 90%. How pathetic. You should have scored 100%. Like, how hard is it to read the question and answer it correctly? You are not even reading the question, you are just reading the answers and then choosing one. This is not how you do it. You need to read the question, understand it, and then choose the answer that best fits. This is not hard. You can do better than this. 
+-- COMPSYS209 Lab 1 is done.
 
 ## Tangents/Unrelated work:
 -- 
@@ -22,8 +23,7 @@
 -- Continue with the Canvas Dashboard --- that should give everything that needs to be done. 
 -- Ask the team in ENGGEN204 team charter, about whose going to share them.
 
--- Continue with the COMPSYS 209 Lab 1 document and finish it.
--- Continue with the Operations for COMPSYS 209.
+-- Continue with the Operations for COMPSYS 209. You may want to revise your recommendation of operations in COMPSYS209.
 -- Do this --- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/). Whilst you do not know both languages, you can still see what you need to learn.
 
 ## Terms/Glossary:
