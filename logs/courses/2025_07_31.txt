@@ -1,0 +1,40 @@
+# Date: 2025_07_31
+# Project/Focus Area: CueHa
+# Location(Windows): 
+# Location(Linux): ~/Desktop/Project_CueHa
+
+## Summary of what was done:
+-- ENGGEN204 Team Charter is done.
+
+## Tangents/Unrelated work:
+-- 
+
+## State of system when stopped:
+-- ELECTENG292 as monday, COMPSYS209 as tueday, SOFTENG284 as wednesday, ENGGEN204 as thursday. friday is flex but restricted to courses, saturday and saturday is flex.
+-- You are now using the lectures for briefing you.
+
+-- Behind one week, but this is expected.
+
+## Questions/unknowns:
+-- 
+
+## Next step when resuming:
+-- Continue with the Canvas Dashboard --- that should give everything that needs to be done. 
+
+-- You definitely needt to know python. This is both required for SOFTENG284 and F:SAE:47 work. You need to know it, and you need to know it well.
+-- Continue with the Operations for COMPSYS 209. You may want to revise your recommendation of operations in COMPSYS209.
+-- Do this --- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/). Whilst you do not know both languages, you can still see what you need to learn.
+
+## Terms/Glossary:
+-- 
+
+## Links/Resources:
+-- [Python for C++ Programmers](https://python.pages.doc.ic.ac.uk/cpp/lessons/cpp/)
+-- [Project_Spec-COMPSYS/ELECTENG_209](https://docs.google.com/document/d/1q0FHrRWt710-OGUFvNlDx8EEi1LsSeQ1YQJdkV1oX2c/edit?tab=t.0)
+
+## Notes/Realizations/Thoughts:
+-- You need to make sure that one-subject dedicated days are not going to waste. You're main goal should be;
+---- Catch up with the lectures, and then do the tasks. It's important that you catch up to your lectures. 
+
+
+
