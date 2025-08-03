@@ -1,0 +1,34 @@
+# Date: 2025_07_26
+# Project/Focus Area: CueHa
+# Location(Windows): 
+# Location(Linux): ~/Desktop/Project_CueHa
+
+## Summary of what was done:
+-- Added the file Useful_Links.txt
+-- Made the CV serviceable.
+
+## Tangents/Unrelated work:
+-- 
+
+## State of system when stopped:
+-- Applied for Several internships.
+
+## Questions/unknowns:
+-- 
+
+## Next step when resuming:
+-- Apply for more internships.
+-- Apply for the StudentLink to be found in the Scholarship website of the University of Auckland. 
+
+## Terms/Glossary:
+-- 
+
+## Files/Links:
+-- [Fitz-Gerald-Dumlao_CV](https://www.canva.com/design/DAGu4_h-3X0/IdiIGsNnPNAbBaNyypcgjQ/edit){kicannicanalegend@gmail.com}
+
+-- [Information about me](https://docs.google.com/document/d/1n05CgF3S1aQHqtUw6IYILjs2OA6-ufYyG-WmEvl6_G8/edit?tab=t.0)
+-- [Summer Research Most fit Projects](https://docs.google.com/document/d/1r-Xf5FTrYcQ2t_JLVU4NEVmoKZXQ_x6KYfO0OPWT0Uo/edit?tab=t.0)
+-- [Useful_Links](_main/general/Useful_Links.txt)
+
+## Notes/Realizations/Thoughts:
+-- You know, you could shoudl try to have a final check of allignement for each stuff that you do before you declare it's done or do anything irreversible. What I mean is, you could save all of the inputs and outputs with your own words and compare it to your starting plan or overview.
