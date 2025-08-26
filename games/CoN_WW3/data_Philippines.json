@@ -1,0 +1,64 @@
+{
+  "resources_legend": { "S": "Supplies", "C": "Components", "F": "Fuel", "E": "Electronics", "R": "Rare Mats", "M": "Manpower" },
+  "resources_initial": { "S": 15756, "C": 11817, "F": 5910, "E": 4334, "R": 4334, "M": 5909 },
+
+  "cities": {
+    "Manila":            { "production_per_day": { "R": 1071, "M": 150 } },
+    "Cebu City":         { "production_per_day": { "C": 1943, "M": 140 } },
+    "Davao City":        { "production_per_day": { "E": 1215, "M": 140 } },
+    "Puerto Princesa":   { "production_per_day": { "S": 1701, "M": 140 } },
+    "Tuguegarao":        { "production_per_day": { "S": 1360, "M": 125 } },
+    "Zamboanga":         { "production_per_day": { "F": 1701, "M": 140 } }
+  },
+
+  "buildings": {
+    "ArmsIndustry": {
+      "effect": { "production_bonus_per_level": 0.10, "applies_to": "all_except_M" },
+      "max_level": 5,
+      "levels": [
+        { "level": 1, "duration_h": 10.5, "cost": { "S": 400, "C": 350, "R": 225, "F": 350, "E": 250 } },
+        { "level": 2, "duration_h": 28.0, "cost": { "S": 450, "C": 450, "R": 275, "F": 400, "E": 300 } },
+        { "level": 3, "duration_h": 35.0, "cost": { "S": 500, "C": 500, "R": 300, "F": 425, "E": 325 } },
+        { "level": 4, "duration_h": 42.0, "cost": { "S": 525, "C": 525, "R": 325, "F": 450, "E": 350 } },
+        { "level": 5, "duration_h": 56.0, "cost": { "S": 550, "C": 550, "R": 350, "F": 475, "E": 375 } }
+      ]
+    },
+
+    "NavalBase": {
+      "effect": { "production_bonus_per_level": 0.05, "applies_to": "all_except_M" },
+      "max_level": 4,
+      "levels": [
+        { "level": 1, "duration_h": 10.5, "cost": { "S": 500, "C": 750, "R": 0, "F": 750, "E": 500 } },
+        { "level": 2, "duration_h": 35.0, "cost": { "S": 500, "C": 500, "R": 300, "F": 425, "E": 325 } },
+        { "level": 3, "duration_h": 42.0, "cost": { "S": 525, "C": 525, "R": 325, "F": 450, "E": 350 } },
+        { "level": 4, "duration_h": 56.0, "cost": { "S": 550, "C": 550, "R": 350, "F": 475, "E": 375 } }
+      ],
+      "duration_h": 10.5,
+      "cost": { "S": 500, "C": 750, "F": 750, "E": 500 }
+    },
+
+    "RecruitmentOffice": {
+      "duration_h": 0.5833333333,
+      "cost": { "S": 750, "C": 500, "F": 500, "E": 500 },
+      "effect": { "M_flat_per_day": 200, "M_percent_bonus": 0.05 }
+    }
+  },
+
+  "units": {
+    "Frigate": {
+      "requires_research": "Frigates",
+      "requires_naval_base_level:1": true,
+      "requires_arms_industry_level:1": true,
+      "build_time_h": 28.0,
+      "cost": { "C": 2000, "M": 750, "E": 1100 }
+    }
+  },
+
+  "research": {
+    "Frigates": {
+      "earliest_start_h": 24.0,
+      "duration_h": 28.0,
+      "cost": { "S": 1540, "R": 1925 }
+    }
+  }
+}
