@@ -17,7 +17,7 @@ static inline void usart_init(uint16_t ubrr) {
     UBRR0H = (uint8_t)(ubrr >> 8);
     UBRR0L = (uint8_t)ubrr;
     UCSR0B = (1 << RXEN0) | (1 << TXEN0);     // enable RX & TX although RX is unused
-    // UCSR0C left at reset: 8N1
+    UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);  // 8 data bits, no parity, 1 stop bit
 }
 
 static inline void usart_tx_char(uint8_t c) {
