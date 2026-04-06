@@ -88,3 +88,29 @@ Secondary affected scenario:
 
 What this fault would look like:
 The controller may still output steering or motion logic as though the e-stop were just another condition instead of an absolute stop command.
+
+## For the visualizer;
+It will be a simple 2D top-down fixed scenario playback tool at roughly turtlesim-level complexity, not a realistic simulator or game. It may use image assets for:
+
+Background 
+- Straight path with left path and right path open; 
+- Straight path with left path open; 
+- Straight path with right path open; 
+- Straight path;
+
+Sprite - Vehicle;
+ - Vehicle_crash_front;
+ - Vehicle_crash_left;
+ - Vehicle_crash_right;
+ - Obstacle_straight;
+ - Obstacle_right;
+ - Obstacle_left;
+
+effects: a static failure overlay such as explosion
+
+The vehicle will use short scripted movement playback for the 9 steering × speed combinations:
+
+- straight / left / right
+- stop / slow / accelerate
+
+STOP should visually decelerate into no motion, SLOW should be conservative movement, and ACCELERATE should be more aggressive movement. Left/right acceleration may be shown as a larger curve, but it must not be treated as automatically bad by the visualizer itself. Failure indication should appear only when the outcome is clearly unsafe, such as colliding with an obstacle, entering a blocked side, or leaving the allowed area. The visualizer must remain fixed, lightweight, and easy to run, so recruits debug the controller, not the visualizer.
