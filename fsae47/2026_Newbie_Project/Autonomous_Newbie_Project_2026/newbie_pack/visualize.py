@@ -190,10 +190,9 @@ class VisualizerApp:
             self.info_frame,
             text=(
                 "Main road width = 2.0 m.\n"
-                "Side roads = 0.75 m each.\n"
+                "Side roads = 0.75 m each.\n\n"
                 "Obstacle collision and road-boundary collision both crash.\n"
-                "Main road top is open / continuous.\n"
-                "Playback follows controller steering and speed_action."
+                "Playback follows controller outputs"
             ),
             font=("Arial", 9),
             fg="gray30",
@@ -735,11 +734,6 @@ class VisualizerApp:
     def draw_obstacle_visual(self, inputs):
         rect = self.obstacle_rect_from_inputs(inputs)
         if rect is None:
-            self.canvas.create_text(
-                320, 200,
-                text="No immediate obstacle",
-                font=("Arial", 10, "italic")
-            )
             return
 
         x1, y1, x2, y2 = rect
@@ -858,7 +852,7 @@ class VisualizerApp:
         self.canvas.create_text(
             self.vehicle_x,
             self.vehicle_y + 34,
-            text="Vehicle",
+            text="Go-Kart",
             font=("Arial", 10, "bold")
         )
 
