@@ -19,16 +19,6 @@ for scenario in scenarios:
         inputs["sensor_valid"]
     )
 
-    print("Scenario:", scenario["name"])
-    print("Inputs:")
-    for key, value in inputs.items():
-        print(" ", key, "=", value)
-
-    print("Output:")
-    print(" ", "steering =", steering)
-    print(" ", "speed_action =", speed_action)
-    print()
-
     summary.append({
         "name": scenario["name"],
         "steering": steering,

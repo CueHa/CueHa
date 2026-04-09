@@ -28,6 +28,8 @@
    4. Emergency stop not dominating
       1. The e-stop exists, but it is checked too late, applied inconsistently, or not enforced absolutely.
 
+---
+
 ## Fault-to-scenario map
 
 ### Fault 1, Wrong priority ordering
@@ -43,8 +45,6 @@ Primary affected scenarios:
 What this fault would look like:
 The controller may keep accelerating or keep treating itself as stable/centered even when obstacle response should already be taking priority.
 
----
-
 ### Fault 2, Conflicting condition override
 Description:
 One branch makes a sensible safety decision, but a later branch overwrites it with a weaker or contradictory action.
@@ -57,8 +57,6 @@ Primary affected scenarios:
 
 What this fault would look like:
 The controller may first slow down or choose an avoidance direction, then later replace that with accelerate or a contradictory steering output.
-
----
 
 ### Fault 3, Unsafe default behaviour
 Description:

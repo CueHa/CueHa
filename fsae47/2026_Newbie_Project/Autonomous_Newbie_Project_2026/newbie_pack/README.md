@@ -10,6 +10,26 @@ In this project, you are given a simplified autonomous vehicle controller that a
 - Workshop attendance is strongly encouraged. Being physically present, and engaging with the team environment are positive signals.
 - Reasoning, communication, and method matter heavily. You are expected to explain what you observed, what you changed, what improved, and what remains uncertain.
 - A final mini interview is done at the end of the project for you to present your work.
+- 
+## Setup
+
+This project is intended to run with standard Python 3.
+
+Required:
+- Python 3
+- Tkinter support in your Python install
+
+Optional:
+- Pillow (`pip install pillow`) for vehicle sprite rotation
+  - If Pillow is not installed, the visualizer will still run, but the vehicle will be shown as a simple drawn shape instead of the image sprite.
+
+Make sure these files are kept in the same folder:
+- controller.py
+- scenarios.py
+- run_scenarios.py
+- visualize.py
+
+Also keep the `visualize_assets/` folder beside `visualize.py`.
 
 ## What you are given
 
