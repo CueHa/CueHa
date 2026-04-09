@@ -1,10 +1,14 @@
 # visualize.py
-# Skeleton visualizer for the 2026 Autonomous Newbie Project.
-# This file reads scenarios from scenarios.py and decisions from controller.py,
-# then displays them in a simple Tkinter visual interface.
 
 import tkinter as tk
 import math
+import os
+
+try:
+    from PIL import Image, ImageTk
+    PIL_AVAILABLE = True
+except ImportError:
+    PIL_AVAILABLE = False
 
 from scenarios import scenarios
 from controller import controller
@@ -50,6 +54,13 @@ SLOW_TARGET_MPS = 1.5
 ACCEL_MIN_TARGET_MPS = 4.5
 ACCEL_OFFSET_TARGET_MPS = 1.0
 
+VEHICLE_IMAGE_WIDTH = 30
+VEHICLE_IMAGE_HEIGHT = 40
+
+# If the vehicle sprite appears to face the wrong direction, change this.
+# Common values to try are 0, 90, 180, -90.
+VEHICLE_IMAGE_ROTATION_OFFSET_DEG = 0
+
 
 class VisualizerApp:
     def __init__(self, root):
@@ -74,6 +85,18 @@ class VisualizerApp:
         self.crash_reason = ""
         self.explosion_x = None
         self.explosion_y = None
+
+        self.asset_dir = os.path.join(
+            os.path.dirname(__file__), "visualize_assets")
+
+        self.bg_images = {}
+        self.obstacle_image = None
+        self.explosion_image = None
+
+        self.vehicle_pil_base = None
+        self.vehicle_rotated_cache = {}
+
+        self.load_visual_assets()
 
         self.title_label = tk.Label(
             root,
@@ -222,6 +245,58 @@ class VisualizerApp:
         self.reset_vehicle_state()
         self.refresh_view()
 
+    def load_visual_assets(self):
+        bg_files = {
+            "bg": "bg.png",
+            "bg_left": "bg_left.png",
+            "bg_right": "bg_right.png",
+            "bg_leftright": "bg_leftright.png",
+        }
+
+        for key, filename in bg_files.items():
+            path = os.path.join(self.asset_dir, filename)
+            try:
+                self.bg_images[key] = tk.PhotoImage(file=path)
+            except tk.TclError:
+                self.bg_images[key] = None
+
+        obstacle_path = os.path.join(self.asset_dir, "obstacle.png")
+        explosion_path = os.path.join(self.asset_dir, "explosion.png")
+
+        try:
+            self.obstacle_image = tk.PhotoImage(file=obstacle_path)
+        except tk.TclError:
+            self.obstacle_image = None
+
+        try:
+            self.explosion_image = tk.PhotoImage(file=explosion_path)
+        except tk.TclError:
+            self.explosion_image = None
+
+        if PIL_AVAILABLE:
+            vehicle_path = os.path.join(self.asset_dir, "vehicle.png")
+            try:
+                vehicle_img = Image.open(vehicle_path).convert("RGBA")
+                self.vehicle_pil_base = vehicle_img.resize(
+                    (VEHICLE_IMAGE_WIDTH, VEHICLE_IMAGE_HEIGHT),
+                    Image.Resampling.LANCZOS
+                )
+            except Exception:
+                self.vehicle_pil_base = None
+
+    def get_background_key(self, inputs):
+        left_clear = inputs["left_clear"]
+        right_clear = inputs["right_clear"]
+
+        if left_clear and right_clear:
+            return "bg_leftright"
+        elif left_clear:
+            return "bg_left"
+        elif right_clear:
+            return "bg_right"
+        else:
+            return "bg"
+
     def current_scenario(self):
         return scenarios[self.index]
 
@@ -302,35 +377,21 @@ class VisualizerApp:
     def get_road_obstacle_segments(self):
         segments = []
 
-        # Main road:
-        # all sides are obstacles except the side openings connected to the 4 branch roads
-        # Also, the top is NOT an obstacle because the road is continuous upward.
-
-        # Main road bottom
         segments.append((ROAD_LEFT, ROAD_BOTTOM, ROAD_RIGHT, ROAD_BOTTOM))
-
-        # Main road left, only below the middle-left opening
         segments.append(
             (ROAD_LEFT, MID_SIDE_ROAD_BOTTOM, ROAD_LEFT, ROAD_BOTTOM))
-
-        # Main road right, only below the middle-right opening
         segments.append(
             (ROAD_RIGHT, MID_SIDE_ROAD_BOTTOM, ROAD_RIGHT, ROAD_BOTTOM))
 
-        # Top left road: only bottom is obstacle
         segments.append(
             (0, TOP_SIDE_ROAD_BOTTOM, ROAD_LEFT, TOP_SIDE_ROAD_BOTTOM))
-
-        # Top right road: only bottom is obstacle
         segments.append((ROAD_RIGHT, TOP_SIDE_ROAD_BOTTOM,
                         CANVAS_W, TOP_SIDE_ROAD_BOTTOM))
 
-        # Middle left road: top and bottom are obstacles
         segments.append((0, MID_SIDE_ROAD_TOP, ROAD_LEFT, MID_SIDE_ROAD_TOP))
         segments.append(
             (0, MID_SIDE_ROAD_BOTTOM, ROAD_LEFT, MID_SIDE_ROAD_BOTTOM))
 
-        # Middle right road: top and bottom are obstacles
         segments.append((ROAD_RIGHT, MID_SIDE_ROAD_TOP,
                         CANVAS_W, MID_SIDE_ROAD_TOP))
         segments.append((ROAD_RIGHT, MID_SIDE_ROAD_BOTTOM,
@@ -374,6 +435,24 @@ class VisualizerApp:
             rotated.extend([cx + rx, cy + ry])
 
         return rotated
+
+    def get_rotated_vehicle_image(self, heading_deg):
+        if self.vehicle_pil_base is None:
+            return None
+
+        rounded_deg = int(
+            round(heading_deg + VEHICLE_IMAGE_ROTATION_OFFSET_DEG))
+
+        if rounded_deg not in self.vehicle_rotated_cache:
+            rotated = self.vehicle_pil_base.rotate(
+                -rounded_deg,
+                expand=True,
+                resample=Image.Resampling.BICUBIC
+            )
+            self.vehicle_rotated_cache[rounded_deg] = ImageTk.PhotoImage(
+                rotated)
+
+        return self.vehicle_rotated_cache[rounded_deg]
 
     def reset_vehicle_state(self):
         scenario = self.current_scenario()
@@ -554,7 +633,6 @@ class VisualizerApp:
         road_fill = "#6f7175"
         road_outline = "black"
 
-        # Main road
         self.canvas.create_rectangle(
             ROAD_LEFT, ROAD_TOP, ROAD_RIGHT, ROAD_BOTTOM,
             fill=road_fill,
@@ -562,7 +640,6 @@ class VisualizerApp:
             width=2
         )
 
-        # Top left side road, extended to left edge and top border
         self.canvas.create_rectangle(
             0,
             ROAD_TOP,
@@ -573,7 +650,6 @@ class VisualizerApp:
             width=2
         )
 
-        # Top right side road, extended to right edge and top border
         self.canvas.create_rectangle(
             ROAD_RIGHT,
             ROAD_TOP,
@@ -584,7 +660,6 @@ class VisualizerApp:
             width=2
         )
 
-        # Middle left side road, extended to left edge
         self.canvas.create_rectangle(
             0,
             MID_SIDE_ROAD_TOP,
@@ -595,7 +670,6 @@ class VisualizerApp:
             width=2
         )
 
-        # Middle right side road, extended to right edge
         self.canvas.create_rectangle(
             ROAD_RIGHT,
             MID_SIDE_ROAD_TOP,
@@ -606,7 +680,6 @@ class VisualizerApp:
             width=2
         )
 
-        # Main center guide
         self.canvas.create_line(
             ROAD_CENTER_X, ROAD_TOP, ROAD_CENTER_X, ROAD_BOTTOM,
             fill="white",
@@ -614,7 +687,6 @@ class VisualizerApp:
             width=2
         )
 
-        # Bottom position reference
         self.canvas.create_text(
             ROAD_LEFT + 18,
             ROAD_BOTTOM + 18,
@@ -660,6 +732,85 @@ class VisualizerApp:
             fill="#8b0000"
         )
 
+    def draw_obstacle_visual(self, inputs):
+        rect = self.obstacle_rect_from_inputs(inputs)
+        if rect is None:
+            self.canvas.create_text(
+                320, 200,
+                text="No immediate obstacle",
+                font=("Arial", 10, "italic")
+            )
+            return
+
+        x1, y1, x2, y2 = rect
+        obstacle_cx = (x1 + x2) / 2.0
+        obstacle_cy = (y1 + y2) / 2.0
+
+        if self.obstacle_image is not None:
+            self.canvas.create_image(
+                obstacle_cx,
+                obstacle_cy,
+                image=self.obstacle_image
+            )
+        else:
+            self.canvas.create_rectangle(
+                x1, y1, x2, y2,
+                fill="#e2634f",
+                outline="black",
+                width=2
+            )
+            self.canvas.create_text(
+                obstacle_cx,
+                obstacle_cy,
+                text=f"OBSTACLE\n{inputs['obstacle_distance_m']:.1f} m",
+                font=("Arial", 9, "bold"),
+                justify="center"
+            )
+
+    def draw_explosion_visual(self, cx, cy):
+        if self.explosion_image is not None:
+            self.canvas.create_image(
+                cx,
+                cy,
+                image=self.explosion_image
+            )
+        else:
+            self.draw_explosion_overlay(cx, cy)
+
+    def draw_vehicle_visual(self):
+        rotated_vehicle_img = self.get_rotated_vehicle_image(
+            self.vehicle_heading_deg)
+
+        if rotated_vehicle_img is not None:
+            self.canvas.create_image(
+                self.vehicle_x,
+                self.vehicle_y,
+                image=rotated_vehicle_img
+            )
+            return
+
+        vehicle_shape = [
+            (-15, 16),
+            (15, 16),
+            (0, -22),
+        ]
+
+        rotated_vehicle = self.rotated_points(
+            self.vehicle_x,
+            self.vehicle_y,
+            vehicle_shape,
+            self.vehicle_heading_deg
+        )
+
+        vehicle_fill = "#ffb3a8" if self.crashed else "#87ceeb"
+
+        self.canvas.create_polygon(
+            rotated_vehicle,
+            fill=vehicle_fill,
+            outline="black",
+            width=2
+        )
+
     def refresh_view(self):
         scenario = self.current_scenario()
         inputs = scenario["inputs"]
@@ -688,59 +839,21 @@ class VisualizerApp:
     def draw_scene(self, inputs, steering, speed_action):
         self.canvas.delete("all")
 
-        self.canvas.create_rectangle(
-            0, 0, CANVAS_W, CANVAS_H,
-            fill="#dceccf",
-            outline=""
-        )
+        bg_key = self.get_background_key(inputs)
+        bg_image = self.bg_images.get(bg_key)
 
-        self.draw_road_network()
-
-        rect = self.obstacle_rect_from_inputs(inputs)
-        if rect is not None:
-            x1, y1, x2, y2 = rect
-            obstacle_y = (y1 + y2) / 2.0
-
-            self.canvas.create_rectangle(
-                x1, y1, x2, y2,
-                fill="#e2634f",
-                outline="black",
-                width=2
-            )
-            self.canvas.create_text(
-                320, obstacle_y,
-                text=f"OBSTACLE\n{inputs['obstacle_distance_m']:.1f} m",
-                font=("Arial", 9, "bold"),
-                justify="center"
-            )
+        if bg_image is not None:
+            self.canvas.create_image(0, 0, anchor="nw", image=bg_image)
         else:
-            self.canvas.create_text(
-                320, 200,
-                text="No immediate obstacle",
-                font=("Arial", 10, "italic")
+            self.canvas.create_rectangle(
+                0, 0, CANVAS_W, CANVAS_H,
+                fill="#dceccf",
+                outline=""
             )
+            self.draw_road_network()
 
-        vehicle_shape = [
-            (-15, 16),
-            (15, 16),
-            (0, -22),
-        ]
-
-        rotated_vehicle = self.rotated_points(
-            self.vehicle_x,
-            self.vehicle_y,
-            vehicle_shape,
-            self.vehicle_heading_deg
-        )
-
-        vehicle_fill = "#ffb3a8" if self.crashed else "#87ceeb"
-
-        self.canvas.create_polygon(
-            rotated_vehicle,
-            fill=vehicle_fill,
-            outline="black",
-            width=2
-        )
+        self.draw_obstacle_visual(inputs)
+        self.draw_vehicle_visual()
 
         self.canvas.create_text(
             self.vehicle_x,
@@ -766,7 +879,7 @@ class VisualizerApp:
         )
 
         if self.crashed and self.explosion_x is not None and self.explosion_y is not None:
-            self.draw_explosion_overlay(self.explosion_x, self.explosion_y)
+            self.draw_explosion_visual(self.explosion_x, self.explosion_y)
 
         if self.crashed:
             banner_fill = "#f2b0a8"
