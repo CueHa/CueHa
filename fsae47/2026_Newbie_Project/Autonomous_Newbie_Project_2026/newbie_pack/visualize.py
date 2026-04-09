@@ -33,6 +33,7 @@ MID_SIDE_ROAD_BOTTOM = 320
 TOP_SIDE_ROAD_BOTTOM = MID_SIDE_ROAD_TOP
 
 VEHICLE_BASE_Y = 420
+VEHICLE_HIT_RADIUS = 18
 
 FRAME_DELAY_MS = 35
 MOTION_PIXELS_PER_MPS = 55.0
@@ -68,6 +69,11 @@ class VisualizerApp:
 
         self.command_steering = "STRAIGHT"
         self.command_speed_action = "SLOW"
+
+        self.crashed = False
+        self.crash_reason = ""
+        self.explosion_x = None
+        self.explosion_y = None
 
         self.title_label = tk.Label(
             root,
@@ -162,8 +168,8 @@ class VisualizerApp:
             text=(
                 "Main road width = 2.0 m.\n"
                 "Side roads = 0.75 m each.\n"
-                "Top side roads reach the top border.\n"
-                "All side roads extend to the canvas edges.\n"
+                "Obstacle collision and road-boundary collision both crash.\n"
+                "Main road top is open / continuous.\n"
                 "Playback follows controller steering and speed_action."
             ),
             font=("Arial", 9),
@@ -254,6 +260,108 @@ class VisualizerApp:
         t = (distance_clamped - 0.5) / (3.0 - 0.5)
         return nearest_y + t * (farthest_y - nearest_y)
 
+    def obstacle_rect_from_inputs(self, inputs):
+        obstacle_y = self.obstacle_y_from_distance(
+            inputs["obstacle_distance_m"])
+        if obstacle_y is None:
+            return None
+
+        return (270, obstacle_y - 20, 370, obstacle_y + 20)
+
+    def vehicle_hits_rect(self, cx, cy, radius, rect):
+        x1, y1, x2, y2 = rect
+
+        closest_x = min(max(cx, x1), x2)
+        closest_y = min(max(cy, y1), y2)
+
+        dx = cx - closest_x
+        dy = cy - closest_y
+
+        return (dx * dx + dy * dy) <= (radius * radius)
+
+    def distance_point_to_segment(self, px, py, x1, y1, x2, y2):
+        dx = x2 - x1
+        dy = y2 - y1
+
+        if dx == 0 and dy == 0:
+            return math.hypot(px - x1, py - y1)
+
+        t = ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)
+        t = max(0.0, min(1.0, t))
+
+        closest_x = x1 + t * dx
+        closest_y = y1 + t * dy
+
+        return math.hypot(px - closest_x, py - closest_y)
+
+    def vehicle_hits_segment(self, cx, cy, radius, segment):
+        x1, y1, x2, y2 = segment
+        dist = self.distance_point_to_segment(cx, cy, x1, y1, x2, y2)
+        return dist <= radius
+
+    def get_road_obstacle_segments(self):
+        segments = []
+
+        # Main road:
+        # all sides are obstacles except the side openings connected to the 4 branch roads
+        # Also, the top is NOT an obstacle because the road is continuous upward.
+
+        # Main road bottom
+        segments.append((ROAD_LEFT, ROAD_BOTTOM, ROAD_RIGHT, ROAD_BOTTOM))
+
+        # Main road left, only below the middle-left opening
+        segments.append(
+            (ROAD_LEFT, MID_SIDE_ROAD_BOTTOM, ROAD_LEFT, ROAD_BOTTOM))
+
+        # Main road right, only below the middle-right opening
+        segments.append(
+            (ROAD_RIGHT, MID_SIDE_ROAD_BOTTOM, ROAD_RIGHT, ROAD_BOTTOM))
+
+        # Top left road: only bottom is obstacle
+        segments.append(
+            (0, TOP_SIDE_ROAD_BOTTOM, ROAD_LEFT, TOP_SIDE_ROAD_BOTTOM))
+
+        # Top right road: only bottom is obstacle
+        segments.append((ROAD_RIGHT, TOP_SIDE_ROAD_BOTTOM,
+                        CANVAS_W, TOP_SIDE_ROAD_BOTTOM))
+
+        # Middle left road: top and bottom are obstacles
+        segments.append((0, MID_SIDE_ROAD_TOP, ROAD_LEFT, MID_SIDE_ROAD_TOP))
+        segments.append(
+            (0, MID_SIDE_ROAD_BOTTOM, ROAD_LEFT, MID_SIDE_ROAD_BOTTOM))
+
+        # Middle right road: top and bottom are obstacles
+        segments.append((ROAD_RIGHT, MID_SIDE_ROAD_TOP,
+                        CANVAS_W, MID_SIDE_ROAD_TOP))
+        segments.append((ROAD_RIGHT, MID_SIDE_ROAD_BOTTOM,
+                        CANVAS_W, MID_SIDE_ROAD_BOTTOM))
+
+        return segments
+
+    def check_obstacle_collision(self):
+        inputs = self.current_scenario()["inputs"]
+        rect = self.obstacle_rect_from_inputs(inputs)
+        if rect is None:
+            return False
+
+        return self.vehicle_hits_rect(
+            self.vehicle_x,
+            self.vehicle_y,
+            VEHICLE_HIT_RADIUS,
+            rect
+        )
+
+    def check_road_boundary_collision(self):
+        for segment in self.get_road_obstacle_segments():
+            if self.vehicle_hits_segment(
+                self.vehicle_x,
+                self.vehicle_y,
+                VEHICLE_HIT_RADIUS,
+                segment
+            ):
+                return True
+        return False
+
     def rotated_points(self, cx, cy, points, deg):
         rad = math.radians(deg)
         cos_a = math.cos(rad)
@@ -280,6 +388,11 @@ class VisualizerApp:
         self.command_steering, self.command_speed_action = self.run_controller_for_current_scenario()
 
         self.frame_i = 0
+
+        self.crashed = False
+        self.crash_reason = ""
+        self.explosion_x = None
+        self.explosion_y = None
 
         if self.after_id is not None:
             self.root.after_cancel(self.after_id)
@@ -392,6 +505,26 @@ class VisualizerApp:
         self.vehicle_x += dx
         self.vehicle_y += dy
 
+        if self.check_obstacle_collision():
+            self.animating = False
+            self.crashed = True
+            self.crash_reason = "Collided with obstacle"
+            self.explosion_x = self.vehicle_x
+            self.explosion_y = self.vehicle_y
+            self.status_label.config(text="Collision with obstacle")
+            self.refresh_view()
+            return
+
+        if self.check_road_boundary_collision():
+            self.animating = False
+            self.crashed = True
+            self.crash_reason = "Hit road boundary"
+            self.explosion_x = self.vehicle_x
+            self.explosion_y = self.vehicle_y
+            self.status_label.config(text="Collision with road boundary")
+            self.refresh_view()
+            return
+
         self.refresh_view()
 
         out_of_bounds = (
@@ -501,6 +634,32 @@ class VisualizerApp:
             font=("Arial", 9)
         )
 
+    def draw_explosion_overlay(self, cx, cy):
+        outer_r = 34
+        inner_r = 16
+        points = []
+
+        for i in range(16):
+            angle = (2.0 * math.pi * i) / 16.0
+            radius = outer_r if i % 2 == 0 else inner_r
+            px = cx + math.cos(angle) * radius
+            py = cy + math.sin(angle) * radius
+            points.extend([px, py])
+
+        self.canvas.create_polygon(
+            points,
+            fill="#ffb347",
+            outline="#d83a2e",
+            width=3
+        )
+        self.canvas.create_text(
+            cx,
+            cy,
+            text="X",
+            font=("Arial", 22, "bold"),
+            fill="#8b0000"
+        )
+
     def refresh_view(self):
         scenario = self.current_scenario()
         inputs = scenario["inputs"]
@@ -537,11 +696,13 @@ class VisualizerApp:
 
         self.draw_road_network()
 
-        obstacle_y = self.obstacle_y_from_distance(
-            inputs["obstacle_distance_m"])
-        if obstacle_y is not None:
+        rect = self.obstacle_rect_from_inputs(inputs)
+        if rect is not None:
+            x1, y1, x2, y2 = rect
+            obstacle_y = (y1 + y2) / 2.0
+
             self.canvas.create_rectangle(
-                270, obstacle_y - 20, 370, obstacle_y + 20,
+                x1, y1, x2, y2,
                 fill="#e2634f",
                 outline="black",
                 width=2
@@ -572,9 +733,11 @@ class VisualizerApp:
             self.vehicle_heading_deg
         )
 
+        vehicle_fill = "#ffb3a8" if self.crashed else "#87ceeb"
+
         self.canvas.create_polygon(
             rotated_vehicle,
-            fill="#87ceeb",
+            fill=vehicle_fill,
             outline="black",
             width=2
         )
@@ -602,12 +765,21 @@ class VisualizerApp:
             justify="center"
         )
 
-        if speed_action == "STOP":
-            banner_fill = "#f4d46c"
-        elif speed_action == "SLOW":
-            banner_fill = "#eadf98"
+        if self.crashed and self.explosion_x is not None and self.explosion_y is not None:
+            self.draw_explosion_overlay(self.explosion_x, self.explosion_y)
+
+        if self.crashed:
+            banner_fill = "#f2b0a8"
+            banner_text = f"FAILURE: {self.crash_reason}"
         else:
-            banner_fill = "#bce6bc"
+            if speed_action == "STOP":
+                banner_fill = "#f4d46c"
+            elif speed_action == "SLOW":
+                banner_fill = "#eadf98"
+            else:
+                banner_fill = "#bce6bc"
+
+            banner_text = f"Decision: {steering} + {speed_action}"
 
         self.canvas.create_rectangle(
             180, 510, 460, 535,
@@ -616,7 +788,7 @@ class VisualizerApp:
         )
         self.canvas.create_text(
             320, 522,
-            text=f"Decision: {steering} + {speed_action}",
+            text=banner_text,
             font=("Arial", 10, "bold")
         )
 
